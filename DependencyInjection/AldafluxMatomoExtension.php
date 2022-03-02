@@ -22,8 +22,11 @@ class AldafluxMatomoExtension extends Extension
                 $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
                 $loader->load('services.yml');
                 
-        $container->setParameter( 'aldaflux_matomo.site', $config['default']['site'] );
-        $container->setParameter( 'aldaflux_matomo.token_auth', $config['default']['token_auth'] );
+                if (isset($config['default']))
+                {
+                    $container->setParameter( 'aldaflux_matomo.site', $config['default']['site'] );
+                    $container->setParameter( 'aldaflux_matomo.token_auth', $config['default']['token_auth'] );
+                }
                 
         
         
