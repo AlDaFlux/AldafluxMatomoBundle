@@ -30,6 +30,8 @@ class MatomoService
     protected $chartBuilder;
     
     protected $siteId;
+    
+    protected $backgroundColor;
 
     public function __construct(ParameterBagInterface $parameterBag, ChartBuilderInterface $chartBuilder)
     {
@@ -39,6 +41,7 @@ class MatomoService
         $this->chartBuilder = $chartBuilder;
         $this->site= $this->parameters->Get("aldaflux_matomo.site");
         $this->tokenAuth= $this->parameters->Get("aldaflux_matomo.token_auth");
+        $this->backgroundColor= "rgb(75, 111, 145)";
     } 
     
     
@@ -65,6 +68,16 @@ class MatomoService
     public function setSiteId($siteId) 
     {
         $this->siteId=$siteId;
+    }
+    
+    public function getBackgroudColor() 
+    {
+        return($this->backgroundColor);
+    }
+    
+    public function setBackgroundColor($backgroundColor) 
+    {
+        $this->backgroundColor=$backgroundColor;
     }
     
     
@@ -128,7 +141,7 @@ class MatomoService
                 'datasets' => [
                     [
                         'label' => $title,
-                        'backgroundColor' => 'rgb(75, 111, 145)',
+                        'backgroundColor' => $this->getBackgroudColor(),
                         'data' => $values,
                     ],
                 ],
