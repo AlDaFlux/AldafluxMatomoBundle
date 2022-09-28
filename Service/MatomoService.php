@@ -30,6 +30,7 @@ class MatomoService
     protected $chartBuilder;
     
     protected $siteId;
+    protected $siteIds;
     
     protected $backgroundColor;
 
@@ -37,6 +38,7 @@ class MatomoService
     {
         $this->nbErrorLogs = 0;
         $this->logs = array();
+        $this->siteIds = array();
         $this->parameters = $parameterBag;
         $this->chartBuilder = $chartBuilder;
         $this->site= $this->parameters->Get("aldaflux_matomo.site");
@@ -65,10 +67,28 @@ class MatomoService
         return($this->siteId);
     }
     
+    
     public function setSiteId($siteId) 
     {
         $this->siteId=$siteId;
     }
+    
+    public function getSiteIds() 
+    {
+        return($this->siteIds);
+    }
+    
+    public function setSiteIds($siteIds) 
+    {
+        $this->siteIds=$siteIds;
+    }
+    
+    
+    public function addSiteId($siteId,$title) 
+    {
+        $this->siteIds[$siteId]=$title;
+    }
+    
     
     public function getBackgroudColor() 
     {
@@ -124,6 +144,70 @@ class MatomoService
     }
     
     
+    function defaultColors()
+    {
+        $graph_colors_default=['#e6194b', '#3cb44b', '#ffe119', '#0082c8', '#f58231', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#d2f53c', '#fabebe','#008080','#e6beff','#aa6e28','#06be5f','#7afe08', '#203216','#f0c2d6'];
+        return($graph_colors_default);
+    }
+    
+    
+    public function getChartBarMultisite() 
+    {
+
+        $colors=$this->defaultColors();
+                
+
+        $datasets=array();
+        
+        $i=0;
+        foreach ($this->siteIds as $siteId=>$title)
+        {
+            $i++;
+
+            
+            $args="method=VisitsSummary.getVisits&idSite=".$siteId."&period=day&date=last15";
+
+            $data=$this->getApi($args);
+            
+            
+//             $color='#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+//             $color='#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+
+             
+             $datasets[]=[
+                        'label' => $title,
+                        'backgroundColor' => $colors[$i],
+                        'data' => $data,
+                    ];
+
+        }
+        
+        
+        foreach ($data as $key => $value)
+        {
+            $labels[]=$key;
+        }
+        
+
+        
+        $chart = $this->chartBuilder->createChart(Chart::TYPE_BAR);
+            $chart->setData([
+                'labels' => $labels,
+                'datasets' => $datasets,
+            ]);
+            
+              $chart->setOptions([
+                      'scales' => 
+                            ['xAxes' => ['stacked' => true],
+                            'yAxes' => ['stacked' => true]
+                      ]]);      
+              
+            return($chart);
+        
+    }
+    
+    
+    
     public function getChartBar($args, $title="Stats") 
     {
             $results=$this->getApi($args);
@@ -143,10 +227,21 @@ class MatomoService
                         'label' => $title,
                         'backgroundColor' => $this->getBackgroudColor(),
                         'data' => $values,
-                    ],
+                    ] 
                 ],
             ]);
             
+              $chart->setOptions([
+                      'scales' => [
+                          'xAxes' => [
+                              ['stacked' => true],
+                          ],
+                          'yAxes' => [
+                              ['stacked' => true],
+                          ],
+                      ],
+                  ]);      
+              
             return($chart);
         
     }
