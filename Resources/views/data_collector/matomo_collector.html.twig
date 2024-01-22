@@ -1,0 +1,64 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% set icon %}
+        {#
+        {% include('@AldafluxMatomoBundle/data_collector/icon/matomo.svg') %}
+        {% include('@AldafluxUserRoleType/data_collector/icon/user_role_type.svg') %}
+        #}
+        <span class="sf-toolbar-value">MatomoCollector</span>
+    {% endset %}
+
+    {% set text %}
+         
+        
+        <div class="sf-toolbar-info-piece">
+            <b>Collector MatomoCollector</b>
+            <span class='sf-toolbar-status sf-toolbar-status-green'>OK</span>
+        </div>
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig') }}
+    
+    
+    
+{% endblock %}
+
+{% block menu %}
+
+   
+    <span class="label ">
+        <span class="icon">
+        {#
+        {% include('@AldafluxMatomoBundle/data_collector/icon/matomo.svg') %}
+        #}
+        </span>
+        <strong> MatomoCollector </strong>
+            <span class="count">
+                <span>OK</span>
+            </span>
+    </span>
+{% endblock %}
+
+
+
+
+{% block panel %}
+    <style>
+        h1.error
+        {
+            background-color: rgb(176, 65, 62);
+            color: white;
+        }
+    </style>
+    
+    <h2> MatomoCollector </h2>
+   
+     <div class="empty">
+            <p>There are no logs .</p>
+    </div>
+    
+       
+                   
+</div>
+{% endblock %}
