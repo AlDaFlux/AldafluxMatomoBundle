@@ -10,8 +10,8 @@
  "prefer-stable":true,
  "require": {
        "doctrine/collections": ">=1.0",
-       "symfony/ux-chartjs": ">=1.2", 
-       "symfony/symfony": ">7.0"
+       "symfony/ux-chartjs": ">=1.2",  
+       "symfony/framework-bundle" : ">=7.1"
   },
     "autoload": {
         "psr-4": {
