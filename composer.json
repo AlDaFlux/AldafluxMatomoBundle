@@ -1,0 +1,24 @@
+{
+  "name": "aldaflux/matomo-bundle",
+  "type": "symfony-bundle",
+  "description": "This is my bundle",
+  "keywords": ["Bundle"],
+  "homepage": "https://github.com/Aldaflux/AldafluxMatomoBundle",
+  "language":  "php",
+  "license": "MIT",
+ "minimum-stability": "stable",
+ "prefer-stable":true,
+ "require": {
+       "doctrine/collections": ">=1.0",
+       "symfony/ux-chartjs": ">=1.2", 
+       "symfony/symfony": ">=7.1"
+  },
+    "autoload": {
+        "psr-4": {
+            "Aldaflux\\AldafluxMatomoBundle\\": ""
+        }
+    }
+
+}
+
+
