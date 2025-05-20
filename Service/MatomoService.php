@@ -140,7 +140,7 @@ class MatomoService
     
     public function getChartBarStatsYear() 
     {
-        $args="method=VisitsSummary.getVisits&idSite=".$this->siteId."&period=year&date=last2";
+        $args="method=VisitsSummary.getVisits&idSite=".$this->siteId."&period=year&date=last5";
         return($this->getChartBar($args, $title="Nombre de visites annuelles"));
     }
     
@@ -174,7 +174,7 @@ class MatomoService
       
     public function getChartBarMultisite($period="period=day&date=last15") 
     {
-          $colors=$this->defaultColors();
+        $colors=$this->defaultColors();
         $datasets=array();
         $i=0;
         foreach ($this->siteIds as $siteId=>$title)
