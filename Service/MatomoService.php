@@ -20,27 +20,23 @@ use Symfony\UX\Chartjs\Model\Chart;
 class MatomoService  
 {
 
-    protected $parameter;
     
     protected $logs;
     protected $nbErrorLogs;
     
     protected $site;
     protected $tokenAuth;
-    protected $chartBuilder;
     
     protected $siteId;
     protected $siteIds;
     
     protected $backgroundColor;
 
-    public function __construct(ParameterBagInterface $parameterBag, ChartBuilderInterface $chartBuilder)
+    public function __construct(protected ParameterBagInterface $parameters,protected ChartBuilderInterface $chartBuilder)
     {
         $this->nbErrorLogs = 0;
         $this->logs = array();
         $this->siteIds = array();
-        $this->parameters = $parameterBag;
-        $this->chartBuilder = $chartBuilder;
         $this->site= $this->parameters->Get("aldaflux_matomo.site");
         $this->tokenAuth= $this->parameters->Get("aldaflux_matomo.token_auth");
         $this->backgroundColor= "rgb(75, 111, 145)";
@@ -159,7 +155,7 @@ class MatomoService
     
     public function getChartBarMultiSiteStatsYear() 
     {
-        $args="period=year&date=last2";
+        $args="period=year&date=last6";
         return($this->getChartBarMultisite($args, $title="Nombre de visites annuelles"));
     }
     
@@ -168,7 +164,7 @@ class MatomoService
     
     function defaultColors()
     {
-        $graph_colors_default=['#e6194b', '#3cb44b', '#ffe119', '#0082c8', '#f58231', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#d2f53c', '#fabebe','#008080','#e6beff','#aa6e28','#06be5f','#7afe08', '#203216','#f0c2d6'];
+        $graph_colors_default=['#e6194b', '#3cb44b', '#ffe119', '#0082c8', '#f58231', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#d2f53c', '#fabebe','#008080','#e6beff','#aa6e28','#06be5f','#7afe08', '#203216','#f0c2d6','#e6194b', '#3cb44b', '#ffe119', '#0082c8', '#f58231', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#d2f53c', '#fabebe','#008080','#e6beff','#aa6e28','#06be5f','#7afe08', '#203216','#f0c2d6'];
         return($graph_colors_default);
     }
       
