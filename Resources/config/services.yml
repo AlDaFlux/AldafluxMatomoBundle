@@ -1,0 +1,11 @@
+services:
+   Aldaflux\AldafluxMatomoBundle\DataCollector\MatomoCollector:
+        tags:
+            -
+                name:     data_collector
+                id:       'aldaflux.matomo_collector'
+   Aldaflux\AldafluxMatomoBundle\Service\MatomoService:
+        arguments: ["@parameter_bag", "@chartjs.builder"]
+   aldaflux.matomo.service:
+        alias: Aldaflux\AldafluxMatomoBundle\Service\MatomoService
+        public: true        
