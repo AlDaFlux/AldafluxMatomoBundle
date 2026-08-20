@@ -276,17 +276,12 @@ class MatomoService
                 ],
             ]);
             
-              $chart->setOptions([
-                      'scales' => [
-                          'xAxes' => [
-                              ['stacked' => true],
-                          ],
-                          'yAxes' => [
-                              ['stacked' => true],
-                          ],
-                      ],
-                  ]);      
-              
+            $chart->setOptions([
+                'scales' => [
+                    'x' => ['stacked' => true],
+                    'y' => ['stacked' => true],
+                ],
+            ]);
             return($chart);
         
     }
