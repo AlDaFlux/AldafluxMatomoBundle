@@ -2,63 +2,77 @@
 
 {% block toolbar %}
     {% set icon %}
-        {#
-        {% include('@AldafluxMatomoBundle/data_collector/icon/matomo.svg') %}
-        {% include('@AldafluxUserRoleType/data_collector/icon/user_role_type.svg') %}
-        #}
-        <span class="sf-toolbar-value">MatomoCollector</span>
+        <span class="icon" style="{{ collector.nbLogs == 0 ? 'filter: grayscale(100%) opacity(0.5);' : '' }} vertical-align: middle;margin-right:1em; transform: translateY(-2px);">
+            {{ include('@AldafluxMatomo/data_collector/icon/matomo.svg') }}
+        </span>
+        <span class="sf-toolbar-value">  Matomo</span>
+        <span class="sf-toolbar-label">{{ collector.nbLogs }}</span>
     {% endset %}
 
     {% set text %}
-         
-        
         <div class="sf-toolbar-info-piece">
-            <b>Collector MatomoCollector</b>
-            <span class='sf-toolbar-status sf-toolbar-status-green'>OK</span>
+            <b>API Calls</b>
+            <span class="sf-toolbar-status {{ collector.nbErrorLogs > 0 ? 'sf-toolbar-status-red' : '' }}">{{ collector.nbLogs }}</span>
+        </div>
+        <div class="sf-toolbar-info-piece">
+            <b>Errors</b>
+            <span class="sf-toolbar-status {{ collector.nbErrorLogs > 0 ? 'sf-toolbar-status-red' : '' }}">{{ collector.nbErrorLogs }}</span>
         </div>
     {% endset %}
 
-    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig') }}
-    
-    
-    
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': true }) }}
 {% endblock %}
 
 {% block menu %}
-
-   
-    <span class="label ">
-        <span class="icon">
-        {#
-        {% include('@AldafluxMatomoBundle/data_collector/icon/matomo.svg') %}
-        #}
+    <span class="label {{ collector.nbErrorLogs > 0 ? 'label-status-error' }}">
+        <span class="icon" style="{{ collector.nbLogs == 0 ? 'filter: grayscale(100%);' : '' }}">
+            {{ include('@AldafluxMatomo/data_collector/icon/matomo.svg') }}
         </span>
-        <strong> MatomoCollector </strong>
-            <span class="count">
-                <span>OK</span>
-            </span>
+        <strong>Matomo API</strong>
+        <span class="count">
+            <span>{{ collector.nbLogs }}</span>
+        </span>
     </span>
 {% endblock %}
 
-
-
-
 {% block panel %}
-    <style>
-        h1.error
-        {
-            background-color: rgb(176, 65, 62);
-            color: white;
-        }
-    </style>
+    <h2>Matomo API Calls</h2>
     
-    <h2> MatomoCollector </h2>
-   
-     <div class="empty">
-            <p>There are no logs .</p>
+    <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ collector.nbLogs }}</span>
+            <span class="label">Total Calls</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.nbErrorLogs }}</span>
+            <span class="label">Errors</span>
+        </div>
     </div>
     
-       
-                   
-</div>
+    {% if collector.logs is empty %}
+        <div class="empty">
+            <p>No Matomo API calls were made.</p>
+        </div>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>Duration</th>
+                    <th>URL</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in collector.logs %}
+                    <tr>
+                        <td>
+                            <span class="label {{ log.success ? 'status-success' : 'status-error' }}">{{ log.status }}</span>
+                        </td>
+                        <td>{{ (log.duration * 1000)|number_format(0) }} ms</td>
+                        <td>{{ log.url }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock %}

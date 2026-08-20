@@ -1,5 +1,7 @@
 services:
    Aldaflux\AldafluxMatomoBundle\DataCollector\MatomoCollector:
+        arguments:
+            - '@Aldaflux\AldafluxMatomoBundle\Service\MatomoService'
         tags:
             -
                 name:     data_collector

@@ -106,12 +106,38 @@ class MatomoService
             $url .= "&format=json";
             $url .= "&token_auth=976b82996e8a81fbaf428002aa986b0b";
           
-            $fetched = file_get_contents($url);
+            $start = microtime(true);
+            $fetched = @file_get_contents($url);
+            $duration = microtime(true) - $start;
+            
+            $status = 0;
+            if (isset($http_response_header) && is_array($http_response_header)) {
+                foreach ($http_response_header as $header) {
+                    if (preg_match('#^HTTP/\d+\.\d+ (\d+)#', $header, $matches)) {
+                        $status = (int) $matches[1];
+                        break;
+                    }
+                }
+            }
+            
+            $success = $status === 200;
+            
+            $this->logs[] = [
+                'url' => preg_replace('/(&token_auth=)[^&]*/', '$1***', $url),
+                'status' => $status,
+                'duration' => $duration,
+                'success' => $success,
+            ];
+            
+            if (!$success) {
+                $this->nbErrorLogs++;
+            }
+            
             $results=json_decode($fetched);
             return($results);
         
     }
-    
+
     
     public function getChartsBarStats() 
     {
